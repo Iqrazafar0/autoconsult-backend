@@ -132,7 +132,7 @@ function App() {
     deleteBtn: { backgroundColor: '#fee2e2', color: '#b91c1c', border: 'none', padding: '6px 12px', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold' }
   };
 
-  // --- PRIVATE DASHBOARD VIEW ---
+  // --- PRIVATE DASHBOARD VIEW (FULLY RESPONSIVE) ---
   if (isLoggedIn) {
     return (
       <div style={styles.wrapper}>
@@ -140,16 +140,18 @@ function App() {
         <div style={styles.blob2}></div>
         <div style={styles.blob3}></div>
 
-        <nav style={styles.nav}>
+        <nav style={{...styles.nav, flexWrap: 'wrap', gap: '10px'}}>
           <h1 style={{ fontSize: '24px' }}>ADMIN<span style={{ color: '#60a5fa' }}>PORTAL</span></h1>
-          <div style={{ display: 'flex', gap: '15px' }}>
-             <button style={{ ...styles.btn, width: 'auto', backgroundColor: '#475569' }} onClick={() => setIsLoggedIn(false)}>Public Site</button>
-             <button style={{ ...styles.btn, width: 'auto', backgroundColor: '#ef4444' }} onClick={() => setIsLoggedIn(false)}>Logout</button>
+          <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+             <button style={{ ...styles.btn, width: 'auto', padding: '8px 15px', backgroundColor: '#475569' }} onClick={() => setIsLoggedIn(false)}>Public Site</button>
+             <button style={{ ...styles.btn, width: 'auto', padding: '8px 15px', backgroundColor: '#ef4444' }} onClick={() => setIsLoggedIn(false)}>Logout</button>
           </div>
         </nav>
 
-        <div style={styles.container}>
+        <div style={{...styles.container, padding: '20px 15px'}}>
           <h2 style={styles.sectionTitle}>Dashboard Analytics</h2>
+          
+          {/* Analytics Cards */}
           <div style={styles.card}>
             <h3>Service Utilization</h3>
             <p style={{color: '#64748b', fontSize: '14px', marginBottom: '25px'}}>Visual capacity tracking</p>
@@ -175,102 +177,106 @@ function App() {
             </div>
           </div>
 
-        {/* --- CLIENT INQUIRIES SECTION --- */}
-<h2 style={styles.sectionTitle}>Client Inquiries</h2>
-<div style={{...styles.card, padding: '0px', overflow: 'hidden', marginBottom: '50px'}}>
-  <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-    <thead style={{backgroundColor: '#f8fafc'}}>
-      <tr style={{ textAlign: 'left' }}>
-        <th style={{ padding: '20px' }}>Client Info</th>
-        <th style={{ padding: '20px' }}>Service</th>
-        <th style={{ padding: '20px' }}>Message</th>
-        <th style={{ padding: '20px' }}>Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      {requests.length === 0 ? (
-        <tr><td colSpan="4" style={{padding: '20px', textAlign: 'center'}}>No new inquiries.</td></tr>
-      ) : (
-        requests.map(req => (
-          <tr key={req.id} style={{ borderBottom: '1px solid #f1f5f9' }}>
-            <td style={{ padding: '20px' }}>
-              <strong>{req.client_name}</strong><br/>
-              <small style={{color: '#64748b'}}>{req.email}</small>
-            </td>
-            <td style={{ padding: '20px' }}>{req.service_interested}</td>
-            <td style={{ padding: '20px' }}>{req.message}</td>
-            <td style={{ padding: '20px' }}>
-              <button 
-                onClick={() => deleteRequest(req.id)} 
-                style={styles.deleteBtn}
-              >
-                Delete
-              </button>
-            </td>
-          </tr>
-        ))
-      )}
-    </tbody>
-  </table>
-</div>
-{/* --- ADD NEW SERVICE FORM (NEW) --- */}
-        <h2 style={styles.sectionTitle}>Manage Services</h2>
-        <div style={styles.card}>
-          <h3>Add New Service</h3>
-          <br></br>
-          <form onSubmit={addService} style={{ display: 'flex', gap: '15px', flexWrap: 'wrap' }}>
-            <input 
-              style={{...styles.input, flex: 1, marginBottom: 0}} 
-              placeholder="Service Name" 
-              value={newService.name} 
-              onChange={e => setNewService({...newService, name: e.target.value})} 
-              required 
-            />
-            <input 
-              style={{...styles.input, flex: 1, marginBottom: 0}} 
-              placeholder="Brief Description" 
-              value={newService.description} 
-              onChange={e => setNewService({...newService, description: e.target.value})} 
-              required 
-            />
-            <input 
-              type="number" 
-              style={{...styles.input, width: '150px', marginBottom: 0}} 
-              placeholder="Price ($)" 
-              value={newService.base_price} 
-              onChange={e => setNewService({...newService, base_price: e.target.value})} 
-              required 
-            />
-            <button type="submit" style={{...styles.btn, width: 'auto', padding: '0 30px'}}>+ Add Service</button>
-          </form>
-        </div>
-
-          <h2 style={styles.sectionTitle}>Detailed Project Tracking</h2>
-          <div style={{ display: 'flex', gap: '15px', marginBottom: '25px' }}>
-            <input style={styles.searchInput} placeholder="Search records..." onChange={(e) => setSearchTerm(e.target.value)} />
-            <button onClick={exportToExcel} style={styles.exportBtn}>📊 Export Excel</button>
-          </div>
-          <div style={{...styles.card, padding: '0px', overflow: 'hidden'}}>
-            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-              <thead style={{backgroundColor: '#f8fafc'}}>
-                <tr style={{ textAlign: 'left' }}>
-                  <th style={{ padding: '20px' }}>Client</th>
-                  <th style={{ padding: '20px' }}>Project</th>
-                  <th style={{ padding: '20px' }}>Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {processedProjects.map(p => (
-                  <tr key={p.id} style={{ borderBottom: '1px solid #f1f5f9' }}>
-                    <td style={{ padding: '20px' }}>{p.client_name}</td>
-                    <td style={{ padding: '20px', fontWeight: '600' }}>{p.title}</td>
-                    <td style={{ padding: '20px' }}>
-                      <span style={{ ...getStatusStyle(p.status), padding: '6px 14px', borderRadius: '20px', fontSize: '12px', fontWeight: 'bold' }}>{p.status}</span>
-                    </td>
+          {/* --- CLIENT INQUIRIES SECTION --- */}
+          <h2 style={styles.sectionTitle}>Client Inquiries</h2>
+          <div style={{...styles.card, padding: '0px', marginBottom: '50px'}}>
+            {/* Mobile Scroll Wrapper shuru */}
+            <div style={{ width: '100%', overflowX: 'auto' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '700px' }}>
+                <thead style={{backgroundColor: '#f8fafc'}}>
+                  <tr style={{ textAlign: 'left' }}>
+                    <th style={{ padding: '15px' }}>Client Info</th>
+                    <th style={{ padding: '15px' }}>Service</th>
+                    <th style={{ padding: '15px' }}>Message</th>
+                    <th style={{ padding: '15px' }}>Action</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {requests.length === 0 ? (
+                    <tr><td colSpan="4" style={{padding: '20px', textAlign: 'center'}}>No new inquiries.</td></tr>
+                  ) : (
+                    requests.map(req => (
+                      <tr key={req.id} style={{ borderBottom: '1px solid #f1f5f9' }}>
+                        <td style={{ padding: '15px' }}>
+                          <strong>{req.client_name}</strong><br/>
+                          <small style={{color: '#64748b'}}>{req.email}</small>
+                        </td>
+                        <td style={{ padding: '15px' }}>{req.service_interested}</td>
+                        <td style={{ padding: '15px' }}>{req.message}</td>
+                        <td style={{ padding: '15px' }}>
+                          <button onClick={() => deleteRequest(req.id)} style={styles.deleteBtn}>Delete</button>
+                        </td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* --- MANAGE SERVICES FORM --- */}
+          <h2 style={styles.sectionTitle}>Manage Services</h2>
+          <div style={styles.card}>
+            <h3>Add New Service</h3>
+            <br />
+            <form onSubmit={addService} style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+              <input 
+                style={{...styles.input, flex: '1 1 250px', marginBottom: '10px'}} 
+                placeholder="Service Name" 
+                value={newService.name} 
+                onChange={e => setNewService({...newService, name: e.target.value})} 
+                required 
+              />
+              <input 
+                style={{...styles.input, flex: '1 1 250px', marginBottom: '10px'}} 
+                placeholder="Brief Description" 
+                value={newService.description} 
+                onChange={e => setNewService({...newService, description: e.target.value})} 
+                required 
+              />
+              <input 
+                type="number" 
+                style={{...styles.input, flex: '1 1 100px', marginBottom: '10px'}} 
+                placeholder="Price ($)" 
+                value={newService.base_price} 
+                onChange={e => setNewService({...newService, base_price: e.target.value})} 
+                required 
+              />
+              <button type="submit" style={{...styles.btn, width: '100%'}}>+ Add Service</button>
+            </form>
+          </div>
+
+          {/* --- PROJECT TRACKING --- */}
+          <h2 style={styles.sectionTitle}>Detailed Project Tracking</h2>
+          <div style={{ display: 'flex', gap: '10px', marginBottom: '25px', flexWrap: 'wrap' }}>
+            <input style={{...styles.searchInput, flex: '1 1 200px'}} placeholder="Search records..." onChange={(e) => setSearchTerm(e.target.value)} />
+            <button onClick={exportToExcel} style={{...styles.exportBtn, width: '100%'}}>📊 Export Excel</button>
+          </div>
+          
+          <div style={{...styles.card, padding: '0px'}}>
+            {/* Mobile Scroll Wrapper shuru */}
+            <div style={{ width: '100%', overflowX: 'auto' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '500px' }}>
+                <thead style={{backgroundColor: '#f8fafc'}}>
+                  <tr style={{ textAlign: 'left' }}>
+                    <th style={{ padding: '15px' }}>Client</th>
+                    <th style={{ padding: '15px' }}>Project</th>
+                    <th style={{ padding: '15px' }}>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {processedProjects.map(p => (
+                    <tr key={p.id} style={{ borderBottom: '1px solid #f1f5f9' }}>
+                      <td style={{ padding: '15px' }}>{p.client_name}</td>
+                      <td style={{ padding: '15px', fontWeight: '600' }}>{p.title}</td>
+                      <td style={{ padding: '15px' }}>
+                        <span style={{ ...getStatusStyle(p.status), padding: '6px 14px', borderRadius: '20px', fontSize: '12px', fontWeight: 'bold' }}>{p.status}</span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
         <footer style={styles.footer}><p>© 2026 Admin Management System</p></footer>
@@ -293,6 +299,45 @@ function App() {
         <button style={{ ...styles.btn, width: 'auto' }} onClick={() => setShowLoginModal(true)}>Staff Login</button>
       </nav>
 
+      {/* --- HERO / ABOUT SECTION --- */}
+<div style={{
+  textAlign: 'center', 
+  padding: '80px 20px', 
+  background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)', 
+  color: 'white',
+  borderRadius: '0 0 60px 60px',
+  marginBottom: '50px'
+}}>
+  <h1 style={{ fontSize: '48px', fontWeight: 'bold', marginBottom: '20px' }}>
+    Drive Your Strategy <span style={{ color: '#60a5fa' }}>Forward</span>
+  </h1>
+  <p style={{ maxWidth: '750px', margin: '0 auto 35px auto', lineHeight: '1.8', fontSize: '19px', opacity: 0.85 }}>
+    At <strong>AutoConsult</strong>, we bridge the gap between complex automotive challenges 
+    and smart strategic solutions. We empower businesses to make informed decisions 
+    through premium consulting and data-driven insights.
+  </p>
+  
+  <button 
+    onClick={() => {
+      const element = document.getElementById('contact-section');
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }}
+    style={{
+      backgroundColor: 'transparent',
+      color: '#60a5fa',
+      border: '2px solid #60a5fa',
+      padding: '12px 35px',
+      borderRadius: '30px',
+      fontSize: '16px',
+      fontWeight: 'bold',
+      cursor: 'pointer'
+    }}
+  >
+    Learn More ↓
+  </button>
+</div>
       {showLoginModal && (
         <div style={styles.modalOverlay}>
           <div style={styles.modalCard}>
@@ -347,8 +392,8 @@ function App() {
             </div>
           )}
         </div>
-
-        <div style={{ ...styles.card, textAlign: 'center' }}>
+      {/* CONTACT FORM SECTION */}
+        <div id="contact-section" style={{ ...styles.card, textAlign: 'center' }}>
           <h2 style={{ fontWeight: '300', fontSize: '28px' }}>Start Your Journey</h2>
           <form onSubmit={handleSubmit} style={{ maxWidth: '500px', margin: '0 auto' }}>
             <input type="text" placeholder="Full Name" style={styles.input} required value={formData.client_name} onChange={e => setFormData({...formData, client_name: e.target.value})} />

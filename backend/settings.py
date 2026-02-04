@@ -131,3 +131,16 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # CORS Settings (Important to Live)
 CORS_ALLOW_ALL_ORIGINS = True
+
+# --- EMAIL CONFIGURATION ---
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
+# Render ke "Environment Variables" mein setting ki hai
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', 'iqraraozafar0@gmail.com')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', 'xorp icns xrno lkyt')
+
+# Default email jo logo ko nazar aaye gi
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
