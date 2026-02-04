@@ -135,9 +135,9 @@ CORS_ALLOW_ALL_ORIGINS = True
 # --- EMAIL CONFIGURATION ---
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_USE_SSL = False  # TLS true hai to ye false hona chahiye
+EMAIL_PORT = 467
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True  
 
 # Render ke Variables ke naam match karein
 EMAIL_HOST_USER = os.getenv('EMAIL_USER') 
