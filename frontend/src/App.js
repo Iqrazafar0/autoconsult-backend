@@ -17,15 +17,15 @@ function App() {
   const [loginData, setLoginData] = useState({ username: '', password: '' });
 
   useEffect(() => {
-    axios.get('http://127.0.0.1:8000/api/services/').then(res => setServices(res.data));
-    axios.get('http://127.0.0.1:8000/api/projects/').then(res => setProjects(res.data));
-    axios.get('http://127.0.0.1:8000/api/requests/').then(res => setRequests(res.data));
+    axios.get('https://autoconsult-backend-3.onrender.com/api/services/').then(res => setServices(res.data));
+    axios.get('https://autoconsult-backend-3.onrender.com/api/projects/').then(res => setProjects(res.data));
+    axios.get('https://autoconsult-backend-3.onrender.com/api/requests/').then(res => setRequests(res.data));
   }, []);
 
   //  Delete Function (Admin ke liye)
   const deleteRequest = (id) => {
     if(window.confirm("Are you sure you want to delete this inquiry?")) {
-      axios.delete(`http://127.0.0.1:8000/api/requests/${id}/`)
+      axios.delete(`https://autoconsult-backend-3.onrender.com/api/requests/${id}/`)
         .then(() => {
           // List se foran remove karne ke liye
           setRequests(requests.filter(req => req.id !== id));
@@ -84,7 +84,7 @@ function App() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.post('http://127.0.0.1:8000/api/requests/', formData)
+    axios.post('https://autoconsult-backend-3.onrender.com/api/requests/', formData)
       .then(res => {
         alert("Application Submitted Successfully! Our team will contact you soon.");
         setFormData({ client_name: '', email: '', service_interested: '', message: '' });
@@ -97,7 +97,7 @@ function App() {
   // --- New function: Add Service ---
   const addService = (e) => {
     e.preventDefault();
-    axios.post('http://127.0.0.1:8000/api/services/', newService)
+    axios.post('https://autoconsult-backend-3.onrender.com/api/services/', newService)
       .then(res => {
         setServices([...services, res.data]); // List mein foran add ho jaye
         setNewService({ name: '', description: '', base_price: '' }); // Form clear karein
