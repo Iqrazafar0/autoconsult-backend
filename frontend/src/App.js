@@ -82,28 +82,34 @@ function App() {
     return { backgroundColor: '#f1f5f9', color: '#475569' };
   };
 
+  // --- SUBMIT FORM UPDATED ---
   const handleSubmit = (e) => {
     e.preventDefault();
+    setIsSubmitting(true); // Loading start
+    
     axios.post('https://autoconsult-backend-3.onrender.com/api/requests/', formData)
       .then(res => {
         alert("Application Submitted Successfully! Our team will contact you soon.");
         setFormData({ client_name: '', email: '', service_interested: '', message: '' });
       })
       .catch(err => {
-        console.error(err);
-        alert("Something went wrong. Please try again.");
+        console.error("Submission Error:", err);
+        alert("Server responded with an error. Check if Email/App Password is correct on Render.");
+      })
+      .finally(() => {
+        setIsSubmitting(false); // Loading stop
       });
   };
-  // --- New function: Add Service ---
+
   const addService = (e) => {
     e.preventDefault();
     axios.post('https://autoconsult-backend-3.onrender.com/api/services/', newService)
       .then(res => {
-        setServices([...services, res.data]); // List mein foran add ho jaye
-        setNewService({ name: '', description: '', base_price: '' }); // Form clear karein
+        setServices([...services, res.data]);
+        setNewService({ name: '', description: '', base_price: '' });
         alert("Nayi Service add ho gayi!");
       })
-      .catch(err => alert("Service add karne mein masla aya"));
+      .catch(err => alert("Issue occure to add the service"));
   };
 
   const styles = {
