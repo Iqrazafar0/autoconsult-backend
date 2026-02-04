@@ -46,7 +46,7 @@ The AutoConsult Team
                 message, 
                 settings.EMAIL_HOST_USER, 
                 recipient_list, 
-                fail_silently=True
+                fail_silently=False
             )
         except Exception as e:
             print(f"Email sending failed: {e}")
