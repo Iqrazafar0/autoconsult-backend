@@ -140,7 +140,7 @@ EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False  # TLS true hai to ye false hona chahiye
 
 # Render ke Variables ke naam match karein
-EMAIL_HOST_USER = os.getenv('iqraraozafar0@gmail.com') 
-EMAIL_HOST_PASSWORD = os.getenv('xorp icns xrno lkyt')
+EMAIL_HOST_USER = os.getenv('EMAIL_USER') 
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_PASS')
 
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
