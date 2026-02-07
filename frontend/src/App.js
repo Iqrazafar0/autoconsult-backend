@@ -86,19 +86,21 @@ function App() {
   // --- SUBMIT FORM UPDATED ---
   const handleSubmit = (e) => {
     e.preventDefault();
-    setIsSubmitting(true); // Loading start
-    
+    setIsSubmitting(true); 
+
     axios.post('https://autoconsult-backend-3.onrender.com/api/requests/', formData)
       .then(res => {
-        alert("Application Submitted Successfully! Our team will contact you soon.");
+        // Agar backend email bhej deta hai toh hi ye alert aaye
+        alert("Success! Your request has been saved and an automated email has been sent.");
         setFormData({ client_name: '', email: '', service_interested: '', message: '' });
       })
       .catch(err => {
         console.error("Submission Error:", err);
-        alert("Server responded with an error. Check if Email/App Password is correct on Render.");
+        // Agar email fail hui ya server down hua toh ye message dikhayega
+        alert("Form saved but Email failed to send. Please check your Backend SMTP settings on Render.");
       })
       .finally(() => {
-        setIsSubmitting(false); // Loading stop
+        setIsSubmitting(false); 
       });
   };
 
