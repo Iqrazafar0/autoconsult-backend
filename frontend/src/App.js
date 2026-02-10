@@ -91,13 +91,13 @@ function App() {
     axios.post('https://autoconsult-backend-3.onrender.com/api/requests/', formData)
       .then(res => {
         // Agar backend email bhej deta hai toh hi ye alert aaye
-        alert("Success! Your request has been saved and an automated email has been sent.");
+        alert("Success! Request Received, We will contact you soon.");
         setFormData({ client_name: '', email: '', service_interested: '', message: '' });
       })
       .catch(err => {
         console.error("Submission Error:", err);
         // Agar email fail hui ya server down hua toh ye message dikhayega
-        alert("Form saved but Email failed to send. Please check your Backend SMTP settings on Render.");
+        alert("Request is rejected.");
       })
       .finally(() => {
         setIsSubmitting(false); 
