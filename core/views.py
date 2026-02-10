@@ -16,12 +16,13 @@ class ClientRequestView(viewsets.ModelViewSet):
     queryset = ClientRequest.objects.all()
     serializer_class = ClientRequestSerializer
 
-    # Jab naya request save hoga, tab ye function chale ga
+    # Indentation Fix ---
+    
     def perform_create(self, serializer):
-        # 1. Pehle data database mein save karein
+        # Data save karein
         instance = serializer.save()
 
-        # 2. Email ki details tayyar karein
+        # Email content
         subject = 'Welcome to AutoConsult - Request Received'
         message = f"""
 Dear {instance.client_name},
@@ -39,7 +40,10 @@ The AutoConsult Team
         """
         recipient_list = [instance.email]
 
-        # 3. Email send karein
+        
+        
+       #  Duplicate Logic Fix ---
+        #  Logging Added ---
         try:
             send_mail(
                 subject, 
@@ -48,5 +52,6 @@ The AutoConsult Team
                 recipient_list, 
                 fail_silently=False
             )
+            print(f"SUCCESS: Email sent to {instance.email}")
         except Exception as e:
-            print(f"Email sending failed: {e}")
+            print(f"ERROR: Email sending failed: {str(e)}")
